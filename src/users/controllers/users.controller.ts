@@ -13,8 +13,13 @@ import debug from "debug";
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersController {
   async listUsers(req: express.Request, res: express.Response) {
-    const users = await usersService.list(100, 0);
-    res.status(200).send(users);
+    try {
+      const users = await usersService.list(100, 0);
+      res.status(200).send(users);
+    } catch (error) {
+      //@ts-ignore
+      res.status(error.status || 500).send();
+    }
   }
 
   async getUserById(req: express.Request, res: express.Response) {

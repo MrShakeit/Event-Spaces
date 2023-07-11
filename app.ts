@@ -4,8 +4,8 @@ import * as http from "http";
 import * as winston from "winston";
 import * as expressWinston from "express-winston";
 import cors from "cors";
-import { CommonRoutesConfig } from "./common/common.routes.config";
-import { UsersRoutes } from "./users/users.routes.config";
+import { CommonRoutesConfig } from "./src/common/common.routes.config";
+import { UsersRoutes } from "./src/users/users.routes.config";
 import debug from "debug";
 
 const app: express.Application = express();
@@ -50,6 +50,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 
 server.listen(port, () => {
   routes.forEach((route: CommonRoutesConfig) => {
+    route.configureRoutes();
     debugLog(`Routes configured for ${route.getName()}`);
   });
   // our only exception to avoiding console.log(), because we
