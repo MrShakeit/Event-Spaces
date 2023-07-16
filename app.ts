@@ -12,6 +12,7 @@ import cors from "cors";
 import { CommonRoutesConfig } from "./src/common/common.routes.config";
 import { UsersRoutes } from "./src/users/users.routes.config";
 import debug from "debug";
+import { AuthRoutes } from "./src/auth/auth.routes.config";
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
@@ -46,6 +47,7 @@ app.use(expressWinston.logger(loggerOptions));
 // here we are adding the UserRoutes to our array,
 // after sending the Express.js application object to have the routes added to our app!
 routes.push(new UsersRoutes(app));
+routes.push(new AuthRoutes(app));
 
 // this is a simple route to make sure everything is working properly
 const runningMessage = `Server running at http://localhost:${port}`;

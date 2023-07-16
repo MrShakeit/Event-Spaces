@@ -1,6 +1,7 @@
+import authMiddleware from "../auth/auth.middleware";
 import { CommonRoutesConfig } from "../common/common.routes.config";
-import UsersController from "./controllers/users.controller";
-import UsersMiddleware from "./middleware/users.middleware";
+import UsersController from "./users.controller";
+import UsersMiddleware from "./users.middleware";
 import express from "express";
 
 export class UsersRoutes extends CommonRoutesConfig {
@@ -11,7 +12,12 @@ export class UsersRoutes extends CommonRoutesConfig {
   configureRoutes(): express.Application {
     this.app
       .route(`/users`)
-      .get(UsersController.listUsers)
+      .get(
+        //@ts-ignore
+        authMiddleware.verifyJWT,
+        authMiddleware.verifyIsAdmin,
+        UsersController.listUsers
+      )
       .post(
         UsersMiddleware.validateSameEmailDoesntExist,
         UsersController.createUser
@@ -19,10 +25,15 @@ export class UsersRoutes extends CommonRoutesConfig {
 
     this.app
       .route(`/users/:id`)
-      .all(UsersMiddleware.validateUserExists)
+      .all([
+        //@ts-ignore
+        authMiddleware.verifyJWT,
+        authMiddleware.onlySameUserOrAdminCanDoThisAction,
+        UsersMiddleware.validateUserExists,
+      ])
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser)
-      .put([UsersMiddleware.validateSameUser, UsersController.put]);
+      .put([UsersMiddleware.validateSameUser, UsersController.updateUser]);
 
     return this.app;
   }

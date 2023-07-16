@@ -1,9 +1,9 @@
 import express from "express";
-import userService from "../../common/services/users.service";
+import userService from "./users.service";
 import debug from "debug";
 import { ObjectId } from "mongodb";
-import usersSchema from "../dto/users.schema";
-import { CustomError } from "../../common/middleware/common.error";
+import usersSchema from "./users.schema";
+import { CustomError } from "../common/middleware/common.error";
 
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersMiddleware {

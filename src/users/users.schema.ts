@@ -1,8 +1,7 @@
 import { Request } from "express";
 import Joi from "joi";
-import { SchemaValidator } from "../../common/middleware/body.validation.middleware";
-import { CreateUserDto, GetUsersDto } from "../dto/create.user.dto";
-import { PutUserDto } from "./put.user.dto";
+import { SchemaValidator } from "../common/middleware/schema.validator";
+import { CreateUserDto, GetUsersDto, PutUserDto } from "./users.types";
 
 export class UsersSchema extends SchemaValidator {
   async validateCreateUser(body: Request["body"]) {

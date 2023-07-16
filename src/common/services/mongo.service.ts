@@ -1,7 +1,7 @@
 import debug from "debug";
 import { MongoClient } from "mongodb";
 
-const log: debug.IDebugger = debug("app:mongoose-service");
+const log: debug.IDebugger = debug("app:mongo-service");
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -14,7 +14,7 @@ console.log(uri);
 const client = new MongoClient(uri, options);
 const dbname = "api-db";
 
-class MongooseService {
+class MongoService {
   private count = 0;
 
   constructor() {
@@ -44,4 +44,4 @@ class MongooseService {
       });
   };
 }
-export default new MongooseService();
+export default new MongoService();

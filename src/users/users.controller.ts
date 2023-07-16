@@ -1,20 +1,15 @@
 // we import express to add types to the request/response objects from our controller functions
-import express from "express";
-
-// we import our newly created user services
-import usersService from "../../common/services/users.service";
-
-// we import the argon2 library for password hashing
-import argon2 from "argon2";
+import { Request, Response } from "express";
+import usersService from "./users.service";
 
 // we use debug with a custom context as described in Part 1
 import debug from "debug";
-import usersSchema from "../dto/users.schema";
-import { CustomError } from "../../common/middleware/common.error";
+import usersSchema from "./users.schema";
+import { CustomError } from "../common/middleware/common.error";
 
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersController {
-  async listUsers(req: express.Request, res: express.Response) {
+  async listUsers(req: Request, res: Response) {
     try {
       const query = await usersSchema.validateGetUsers(req.query);
       const users = await usersService.list(query.limit, query.page);
@@ -26,7 +21,7 @@ class UsersController {
     }
   }
 
-  async getUserById(req: express.Request, res: express.Response) {
+  async getUserById(req: Request, res: Response) {
     try {
       const id = await usersSchema.validateId(req.params.id);
       const user = await usersService.readById(id);
@@ -38,7 +33,7 @@ class UsersController {
     }
   }
 
-  async createUser(req: express.Request, res: express.Response) {
+  async createUser(req: Request, res: Response) {
     try {
       const body = await usersSchema.validateCreateUser(req.body);
       const userId = await usersService.create(body);
@@ -50,11 +45,11 @@ class UsersController {
     }
   }
 
-  async put(req: express.Request, res: express.Response) {
+  async updateUser(req: Request, res: Response) {
     try {
       const body = await usersSchema.validateUpdateUser(req.body);
       const id = await usersSchema.validateId(req.params.id);
-      await usersService.putById(id, body);
+      await usersService.updateById(id, body);
       res.status(204).send();
     } catch (error) {
       const err = error as CustomError;
@@ -63,7 +58,7 @@ class UsersController {
     }
   }
 
-  async removeUser(req: express.Request, res: express.Response) {
+  async removeUser(req: Request, res: Response) {
     try {
       const id = await usersSchema.validateId(req.params.id);
       await usersService.deleteById(id);
