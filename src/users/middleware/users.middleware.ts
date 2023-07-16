@@ -1,6 +1,9 @@
 import express from "express";
 import userService from "../../common/services/users.service";
 import debug from "debug";
+import { ObjectId } from "mongodb";
+import usersSchema from "../dto/users.schema";
+import { CustomError } from "../../common/middleware/common.error";
 
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersMiddleware {
@@ -23,7 +26,7 @@ class UsersMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const user = await userService.getUserByEmail(req.body.email);
+    const user = ""; // await userService.getUserBy({ email: req.body.email });
     if (user) {
       res.status(400).send({ error: `User email already exists` });
     } else {
@@ -31,17 +34,21 @@ class UsersMiddleware {
     }
   }
 
-  async validateSameEmailBelongToSameUser(
+  async validateSameUser(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    const user = await userService.getUserByEmail(req.body.email);
-    if (user && user.id === req.params.userId) {
-      next();
-    } else {
-      res.status(400).send({ error: `Invalid email` });
-    }
+    const user = await userService.getUserBy({
+      _id: new ObjectId(req.params.id),
+    });
+    console.log(user);
+    next();
+    // if (user && user._id === req.params.userId) {
+
+    // } else {
+    //   res.status(400).send({ error: `Invalid email` });
+    // }
   }
 
   // Here we need to use an arrow function to bind `this` correctly
@@ -53,7 +60,7 @@ class UsersMiddleware {
     if (req.body.email) {
       log("Validating email", req.body.email);
 
-      this.validateSameEmailBelongToSameUser(req, res, next);
+      this.validateSameUser(req, res, next);
     } else {
       next();
     }
@@ -64,22 +71,22 @@ class UsersMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const user = await userService.readById(req.params.userId);
-    if (user) {
-      next();
-    } else {
-      res.status(404).send({
-        error: `User ${req.params.userId} not found`,
+    try {
+      const id = await usersSchema.validateId(req.params.id);
+      const user = await userService.readById(id);
+      if (user) {
+        next();
+      } else {
+        res.status(404).send({
+          error: `User ${req.params.id} not found`,
+        });
+      }
+    } catch (error) {
+      const err = error as CustomError;
+      res.status(err.status || 500).send({
+        message: err.message || "Unknown Error",
       });
     }
-  }
-  async extractUserId(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    req.body.id = req.params.userId;
-    next();
   }
 }
 

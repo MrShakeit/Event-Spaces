@@ -9,47 +9,70 @@ import argon2 from "argon2";
 
 // we use debug with a custom context as described in Part 1
 import debug from "debug";
+import usersSchema from "../dto/users.schema";
+import { CustomError } from "../../common/middleware/common.error";
 
 const log: debug.IDebugger = debug("app:users-controller");
 class UsersController {
   async listUsers(req: express.Request, res: express.Response) {
     try {
-      const users = await usersService.list(100, 0);
+      const query = await usersSchema.validateGetUsers(req.query);
+      const users = await usersService.list(query.limit, query.page);
       res.status(200).send(users);
     } catch (error) {
-      //@ts-ignore
-      res.status(error.status || 500).send();
+      const err = error as CustomError;
+      log("error", err.message);
+      res.status(err.status || 500).send({ message: err.message });
     }
   }
 
   async getUserById(req: express.Request, res: express.Response) {
-    const user = await usersService.readById(req.body.id);
-    res.status(200).send(user);
+    try {
+      const id = await usersSchema.validateId(req.params.id);
+      const user = await usersService.readById(id);
+      res.status(200).send(user);
+    } catch (error) {
+      const err = error as CustomError;
+      log("error", err.message);
+      res.status(err.status || 500).send({ message: err.message });
+    }
   }
 
   async createUser(req: express.Request, res: express.Response) {
-    req.body.password = await argon2.hash(req.body.password);
-    const userId = await usersService.create(req.body);
-    res.status(201).send({ id: userId });
-  }
-
-  async patch(req: express.Request, res: express.Response) {
-    if (req.body.password) {
-      req.body.password = await argon2.hash(req.body.password);
+    try {
+      const body = await usersSchema.validateCreateUser(req.body);
+      const userId = await usersService.create(body);
+      res.status(201).send({ id: userId });
+    } catch (error) {
+      const err = error as CustomError;
+      log("error", err.message);
+      res.status(err.status || 500).send({ message: err.message });
     }
-    log(await usersService.patchById(req.body.id, req.body));
-    res.status(204).send();
   }
 
   async put(req: express.Request, res: express.Response) {
-    req.body.password = await argon2.hash(req.body.password);
-    log(await usersService.putById(req.body.id, req.body));
-    res.status(204).send();
+    try {
+      const body = await usersSchema.validateUpdateUser(req.body);
+      const id = await usersSchema.validateId(req.params.id);
+      await usersService.putById(id, body);
+      res.status(204).send();
+    } catch (error) {
+      const err = error as CustomError;
+      log("error", err.message);
+      res.status(err.status || 500).send({ message: err.message });
+    }
   }
 
   async removeUser(req: express.Request, res: express.Response) {
-    log(await usersService.deleteById(req.body.id));
-    res.status(204).send();
+    try {
+      const id = await usersSchema.validateId(req.params.id);
+      await usersService.deleteById(id);
+      res.status(204).send();
+    } catch (error) {
+      const err = error as CustomError;
+      log("error", err.message);
+      res.status(err.status || 500).send({ message: err.message });
+    }
   }
 }
 

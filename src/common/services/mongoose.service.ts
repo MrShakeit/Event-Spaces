@@ -1,34 +1,40 @@
-import mongoose from "mongoose";
 import debug from "debug";
+import { MongoClient } from "mongodb";
 
 const log: debug.IDebugger = debug("app:mongoose-service");
+const options = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+};
+const uri = process.env.MONGO_URL!;
+
+console.log(uri);
+
+const client = new MongoClient(uri, options);
+const dbname = "api-db";
 
 class MongooseService {
   private count = 0;
-  private mongooseOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    useFindAndModify: false,
-  };
 
   constructor() {
     this.connectWithRetry();
   }
 
-  getMongoose() {
-    return mongoose;
+  getDatabases() {
+    return client.db(dbname);
   }
 
   connectWithRetry = () => {
     log("Attempting MongoDB connection (will retry if needed)");
-    mongoose
-      .connect("mongodb://localhost:27017/api-db", this.mongooseOptions)
+    client
+      .connect()
       .then(() => {
         log("MongoDB is connected");
       })
       .catch((err) => {
         const retrySeconds = 5;
+        console.log("error", err);
         log(
           `MongoDB connection unsuccessful (will retry #${++this
             .count} after ${retrySeconds} seconds):`,

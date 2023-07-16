@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+const dotenvResult = dotenv.config();
+if (dotenvResult.error) {
+  throw dotenvResult.error;
+}
 import express from "express";
 import * as http from "http";
 
@@ -10,7 +15,7 @@ import debug from "debug";
 
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
-const port = 3000;
+const port = 8000;
 const routes: Array<CommonRoutesConfig> = [];
 const debugLog: debug.IDebugger = debug("app");
 
