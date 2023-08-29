@@ -1,0 +1,46 @@
+{
+  "name": "event-spaces",
+  "version": "1.0.0",
+  "description": "Online Booking System",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "tsc && node --unhandled-rejections=strict ./dist/app.js",
+    "debug": "export DEBUG=* && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablo-mazurkiewicz/Event-Spaces.git"
+  },
+  "author": "pawel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pablo-mazurkiewicz/Event-Spaces/issues"
+  },
+  "homepage": "https://github.com/pablo-mazurkiewicz/Event-Spaces#readme",
+  "dependencies": {
+    "argon2": "^0.30.3",
+    "cors": "^2.8.5",
+    "date-fns": "^2.30.0",
+    "debug": "^4.3.4",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-winston": "^4.2.0",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongodb": "^5.7.0",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/debug": "^4.1.8",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.0.1",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1",
+    "tslint": "^6.1.3",
+    "typescript": "^5.1.6"
+  }
+}
