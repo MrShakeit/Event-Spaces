@@ -53,6 +53,7 @@ class UsersService implements CRUD {
   }
   async readUserDetails(id: string): Promise<GetUsersDetails | null> {
     const userWithBookings = await UsersDao.getUserDetails(id);
+    console.log(userWithBookings);
     return userWithBookings;
   }
 }

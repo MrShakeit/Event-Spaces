@@ -8,7 +8,11 @@ class AuthController {
   async createJWT(req: express.Request, res: express.Response) {
     try {
       const { token, hash } = authService.createJWT(req.body);
-      return res.status(201).send({ accessToken: token, refreshToken: hash });
+      return res.status(201).send({
+        accessToken: token,
+        refreshToken: hash,
+        permissionFlags: req.body.permissionFlags,
+      });
     } catch (err) {
       log("createJWT error: %O", err);
       return res.status(500).send();

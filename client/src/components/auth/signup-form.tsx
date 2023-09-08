@@ -6,35 +6,6 @@ import { authenticationApi } from "../../api/authentication-api";
 import { CreateUserDto } from "../../pages/types/users";
 
 const SignUp: React.FC = () => {
-  // const handleSubmit = async (values: any, { setSubmitting }: any) => {
-  //   try {
-  //     console.log("Submitting form with values:", values);
-
-  //     // Send sign-up data to the server
-  //     const response = await fetch("http://localhost:8000/users", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(values),
-  //     });
-  //     console.log("Server response:", response);
-
-  //     if (response.ok) {
-  //       // Sign-up successful
-  //       console.log("Sign-up successful!");
-  //     } else {
-  //       // Sign-up failed
-  //       const responseData = await response.json();
-  //       console.log("Sign-up failed:", responseData.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during sign-up:", error);
-  //     console.error("Validation error:", ValidationError);
-  //   } finally {
-  //     setSubmitting(false);
-  //   }
-  // };
   const handleSubmit = async (
     user: CreateUserDto,
     { setSubmitting, setFieldError }: any

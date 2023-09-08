@@ -10,7 +10,7 @@ export class UsersRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application {
-    this.app.route(`/users/details/:id`).get(
+    this.app.route(`/admin/user/details/:id`).get(
       //@ts-ignore
       authMiddleware.verifyJWT,
       authMiddleware.verifyIsAdmin,
@@ -28,6 +28,13 @@ export class UsersRoutes extends CommonRoutesConfig {
         UsersMiddleware.validateSameEmailDoesntExist,
         UsersController.createUser,
       ]);
+
+    this.app.route(`/admin/users`).get(
+      //@ts-ignore
+      authMiddleware.verifyJWT,
+      authMiddleware.verifyIsAdmin,
+      UsersController.listUsers
+    );
 
     this.app
       .route(`/users/:id`)

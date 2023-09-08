@@ -4,21 +4,23 @@ import { SchemaValidator } from "../common/middleware/schema.validator";
 import { Space } from "./spaces.types";
 
 export class SpacesSchema extends SchemaValidator {
-  async validateCreateUser(body: Request["body"]) {
+  async validateCreateSpace(body: Request["body"]) {
     const schema = Joi.object<Space>({
       name: Joi.string().trim().min(0).max(200).required(),
       address: {
         city: Joi.string().trim().min(0).max(200).required(),
         street: Joi.string().trim().min(0).max(200).required(),
-        number: Joi.number(),
+        number: Joi.string().trim().min(1).max(100),
         floor: Joi.string().trim().min(0).max(200),
         room_no: Joi.number(),
         other: Joi.string().trim().min(0).max(200),
       },
       size: Joi.string().trim().min(0).max(200),
       price: Joi.number(),
+      resident_price: Joi.number(),
       image: Joi.string().trim().min(0).max(200),
       images: Joi.array().max(5),
+      videos: Joi.array().max(3),
       description: Joi.string().trim().min(8).max(200),
     });
 
@@ -37,8 +39,8 @@ export class SpacesSchema extends SchemaValidator {
       address: {
         city: Joi.string().trim().min(0).max(200).required(),
         street: Joi.string().trim().min(0).max(200).required(),
-        number: Joi.number(),
-        floor: Joi.string().trim().min(0).max(200),
+        number: Joi.string().trim().min(0).max(200),
+        floor: Joi.number(),
         room_no: Joi.number(),
         other: Joi.string().trim().min(0).max(200),
       },

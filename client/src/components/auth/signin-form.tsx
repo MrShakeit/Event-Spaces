@@ -8,7 +8,7 @@ import { UserCredentials } from "../../pages/types/users";
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { signIn } = useAuth();
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
 
   const handleSubmit = async (
     values: UserCredentials,
@@ -16,33 +16,16 @@ const Login: React.FC = () => {
   ) => {
     try {
       setError("");
-      const response = await signIn(values);
-      console.log("Successful login", response);
-
+      await signIn(values);
+      console.log("Successful login");
       navigate("/");
+      const accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken", accessToken);
     } catch (error) {
       setFieldError("password", "Invalid email and/or password");
+      console.log(error);
       setFieldError("email", "");
     }
-    //   const handleSubmit = async (
-    //     values: any,
-    //     { setSubmitting, setFieldError }: any
-    //   ) => {
-    //     try {
-    //       const credentials = {
-    //         email: values.email,
-    //         password: values.password,
-    //       };
-
-    //       const response = await authenticationApi.signIn(credentials);
-
-    //       console.log("Login successful!", response);
-    //     } catch (error) {
-    //       console.error("Error during login:", error);
-    //       setFieldError("password", "Invalid email and/or password");
-    //     } finally {
-    //       setSubmitting(false);
-    //     }
   };
 
   return (

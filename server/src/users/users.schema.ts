@@ -48,8 +48,20 @@ export class UsersSchema extends SchemaValidator {
     const schema = Joi.object<PutUserDto>({
       email: Joi.string().trim().max(200).email().required(),
       password: Joi.string().trim().min(8).max(200).required(),
-      firstName: Joi.string().optional(),
-      lastName: Joi.string().optional(),
+      name: {
+        first: Joi.string().max(100).required(),
+        last: Joi.string().max(100).required(),
+        prefix: Joi.string().max(100).optional(),
+      },
+      gender: Joi.string().max(200).optional(),
+      address: {
+        city: Joi.string().max(100).required(),
+        street: Joi.string().max(100).required(),
+        number: Joi.string().max(100).required(),
+        postalCode: Joi.string().max(100).required(),
+        subdivision: Joi.string().max(100).required(),
+        barangay: Joi.string().max(100).required(),
+      },
       permissionFlags: Joi.number().optional(),
       isBlocked: Joi.boolean().optional(),
     });

@@ -37,6 +37,7 @@ class UsersController {
       const userId = req.params.id;
       console.log("id", userId);
       const getUserDetails = await usersService.readUserDetails(userId);
+      console.log("error", getUserDetails);
       res.status(200).send(getUserDetails);
     } catch (error) {
       const err = error as CustomError;

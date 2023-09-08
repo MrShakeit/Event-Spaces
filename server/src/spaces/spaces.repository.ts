@@ -66,7 +66,39 @@ class SpacesRepository {
         },
       },
       {
-        $unwind: "$bookings",
+        $project: {
+          _id: 1,
+          name: 1,
+          address: {
+            city: 1,
+            number: 1,
+            street: 1,
+            floor: 1,
+            room_no: 1,
+            other: 1,
+          },
+          size: 1,
+          price: 1,
+          image: 1,
+          images: 1,
+          videos: 1,
+          description: 1,
+          is_deleted: 1,
+          is_blocked: 1,
+          bookings: {
+            $cond: {
+              if: { $isArray: "$bookings" },
+              then: "$bookings",
+              else: [],
+            },
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: "$bookings",
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $lookup: {
@@ -77,16 +109,24 @@ class SpacesRepository {
         },
       },
       {
-        $unwind: "$bookings.user",
-      },
-      {
-        $project: { "bookings.user.password": 0 },
+        $unwind: {
+          path: "$bookings.user",
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $group: {
           _id: "$_id",
           name: { $first: "$name" },
+          address: { $first: "$address" },
           size: { $first: "$size" },
+          price: { $first: "$price" },
+          image: { $first: "$image" },
+          images: { $first: "$images" },
+          videos: { $first: "$videos" },
+          description: { $first: "$description" },
+          is_deleted: { $first: "$is_deleted" },
+          is_blocked: { $first: "$is_blocked" },
           bookings: { $push: "$bookings" },
         },
       },

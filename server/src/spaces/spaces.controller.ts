@@ -11,9 +11,9 @@ const log: debug.IDebugger = debug("app:spaces-controller");
 class SpacesController {
   async createSpace(req: Request, res: Response) {
     try {
-      const body = await spacesSchema.validateCreateUser(req.body);
-      const userId = await spacesService.create(body);
-      res.status(201).send({ id: userId });
+      const body = await spacesSchema.validateCreateSpace(req.body);
+      const spaceId = await spacesService.create(body);
+      res.status(201).send({ id: spaceId });
     } catch (error) {
       const err = error as CustomError;
       log("error", err.message);
@@ -26,7 +26,7 @@ class SpacesController {
       const body = await spacesSchema.validateUpdateSpace(req.body);
       const id = await spacesSchema.validateId(req.params.id);
       await spacesService.updateById(id, body);
-      res.status(204).send();
+      res.status(204).send("update succesfull");
     } catch (error) {
       const err = error as CustomError;
       log("error", err.message);
@@ -63,7 +63,7 @@ class SpacesController {
       const spaceId = req.params.id;
       console.log("id", spaceId);
       const getSpaceDetails = await spacesService.readSpaceDetails(spaceId);
-      res.status(200).send( getSpaceDetails );
+      res.status(200).send(getSpaceDetails);
     } catch (error) {
       const err = error as CustomError;
       log("error", err.message);

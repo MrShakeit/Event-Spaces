@@ -78,7 +78,7 @@ export abstract class AbstractApiService {
       },
       (error: AxiosError) => {
         if (error.response?.status === 401) {
-          // Return a promise that will be resolved with the navigate function
+          localStorage.removeItem("user");
           return Promise.reject("/auth/signin");
         }
         return Promise.reject(error);

@@ -1,40 +1,49 @@
-import React, { useEffect, useState } from "react";
-import { redirect, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth-context";
 
-const LoadingSpinner = () => <div className="spinner"></div>;
-
 const RoutePolicy = ({ children }: any) => {
-  const { user, status } = useAuth();
+  const navigate = useNavigate();
+  const { permissionFlags, status } = useAuth();
+  const isAdminPath = window.location.pathname.startsWith("/admin");
   const isAuthPath = ["/auth", "/auth/signin", "/auth/signup"].includes(
     window.location.pathname
   );
-  const isAdminPath = ["/admin"].includes(window.location.pathname);
-  const [isRedirect, setRedirect] = useState(false);
-
-  useEffect(() => {
-    const redirectIfNotLoggedOrNoPermissions = () => {
-      if (status === "loading") return;
-
-      if (status === "authenticated" && isAuthPath) {
-        setRedirect(true);
-        window.location.href = "/";
-        return;
-      } else if (status === "unauthenticated" && !isAuthPath) {
-        setRedirect(true);
-        window.location.href = "/auth/signin";
-        return;
-      }
-      setRedirect(false);
+  const isHomePagePath = window.location.pathname === "/";
+  const hasPermission = () => {
+    const map = {
+      "/admin/users": 12,
+      "/admin/bookings": 12,
+      "/admin/spaces/": 12,
+      "/admin/spaces": 12,
+      "/admin/create/space": 12,
     };
-    redirectIfNotLoggedOrNoPermissions();
-  }, [user, status, isRedirect, isAuthPath, isAdminPath]);
+    if (map[window.location.pathname] === undefined) {
+      return true;
+    }
+    return map[window.location.pathname] === permissionFlags;
+  };
+  useEffect(() => {
+    if (status === "authenticated" && isAuthPath) {
+      navigate("/");
+      return;
+    } else if (status === "authenticated" && !hasPermission()) {
+      navigate("/");
+      return;
+    } else if (status === "unauthenticated" && !isAuthPath) {
+      navigate("/");
+      return;
+    }
+  }, [
+    status,
+    permissionFlags,
+    navigate,
+    isAuthPath,
+    isAdminPath,
+    isHomePagePath,
+  ]);
 
-  if (status !== "loading" && !isRedirect) {
-    return <>{children}</>; 
-  }
-
-  return <LoadingSpinner />;
+  return <>{children}</>;
 };
 
 export default RoutePolicy;

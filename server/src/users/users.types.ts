@@ -30,8 +30,20 @@ export interface CreateUserDto {
 export interface PutUserDto {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  name: {
+    first: string;
+    last: string;
+    prefix: string;
+  };
+  gender?: string;
+  address?: {
+    city: string;
+    number: string;
+    street: string;
+    postalCode: string;
+    subdivision?: string;
+    barangay: string;
+  };
   permissionFlags: number;
   isBlocked: boolean;
   blockReason?: string | null;
@@ -44,10 +56,24 @@ export type GetUsersDetails = User & { bookings: BookingWithSpace[] };
 export interface UserEntity {
   email: string;
   password: string;
-  firstName?: string;
-  lastName?: string;
+  name: {
+    first: string;
+    last: string;
+    prefix: string;
+  };
+  gender?: string;
+  address?: {
+    city: string;
+    number: string;
+    street: string;
+    postalCode: string;
+    subdivision?: string;
+    barangay: string;
+  };
+  permissionFlags: number;
   isBlocked: boolean;
-  permissionFlags?: number;
+  blockReason?: string | null;
+  isCityMember: boolean;
 }
 
 type User = Omit<WithId<UserEntity>, "password">;
