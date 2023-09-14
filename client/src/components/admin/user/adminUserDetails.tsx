@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { adminApi } from "../../../api/admin-api";
 import { GetUsersDetails } from "../../../pages/types/users";
 import { Booking } from "../../../pages/types/bookings";
+import { Card, Col, Container, Row } from "react-bootstrap";
 
 const AdminUserDetailsPage = () => {
   const { id } = useParams();
@@ -24,81 +25,54 @@ const AdminUserDetailsPage = () => {
   }, [id]);
 
   return (
-    <div className="px-4 py-2">
+    <Container className="mt-5">
       {user ? (
         <div>
           <h2 className="text-2xl font-bold mb-4">User Details</h2>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <p>
-                <strong>User ID:</strong> {user._id}
-              </p>
-              <p>
-                <strong>Email:</strong> {user.email}
-              </p>
-              <p>
-                <strong>First Name:</strong> {user.name?.first}
-              </p>
-              <p>
-                <strong>Last Name:</strong> {user.name?.last}
-              </p>
-              <p>
-                <strong>Prefix:</strong> {user.name?.prefix}
-              </p>
-              <p>
-                <strong>Gender:</strong> {user.gender}
-              </p>
-            </div>
-            <div>
-              <p>
-                <strong>City:</strong> {user.address?.city}
-              </p>
-              <p>
-                <strong>Number:</strong> {user.address?.number}
-              </p>
-              <p>
-                <strong>Postal Code:</strong> {user.address?.postalCode}
-              </p>
-              <p>
-                <strong>Street:</strong> {user.address?.street}
-              </p>
-              <p>
-                <strong>Barangay:</strong> {user.address?.barangay}
-              </p>
-              <p>
-                <strong>Subdivision:</strong> {user.address?.subdivision}
-              </p>
-            </div>
-          </div>
-          <div className="mb-4">
-            <p>
-              <strong>Permission Flags:</strong> {user.permissionFlags}
-            </p>
-            <p>
-              <strong>Is Blocked:</strong> {user.isBlocked ? "Yes" : "No"}
-            </p>
-          </div>
+          <Row className="mb-4">
+            <Col sm={6}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>User ID: {user._id}</Card.Title>
+                  <Card.Text>Email: {user.email}</Card.Text>
+                  <Card.Text>First Name: {user.name?.first}</Card.Text>
+                  <Card.Text>Last Name: {user.name?.last}</Card.Text>
+                  <Card.Text>Prefix: {user.name?.prefix}</Card.Text>
+                  <Card.Text>Gender: {user.gender}</Card.Text>
+
+                  <Card.Text>City: {user.address?.city}</Card.Text>
+                  <Card.Text>Postal Code: {user.address?.postalCode}</Card.Text>
+                  <Card.Text>Street: {user.address?.street}</Card.Text>
+                  <Card.Text>Number: {user.address?.number}</Card.Text>
+
+                  <Card.Text>Barangay: {user.address?.barangay}</Card.Text>
+                  <Card.Text>
+                    Subdivision: {user.address?.subdivision}
+                  </Card.Text>
+                  <Card.Text>
+                    Permission Flags: {user.permissionFlags}
+                  </Card.Text>
+                  <Card.Text>
+                    Is Blocked: {user.isBlocked ? "Yes" : "No"}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
           {user.bookings && user.bookings.length > 0 && (
             <div>
               <h2 className="text-2xl font-bold mb-4">Bookings</h2>
               {user.bookings.map((booking: Booking, index: number) => (
-                <div key={index} className="mb-4 border p-4 rounded">
-                  <p>
-                    <strong>Booking ID:</strong> {booking._id}
-                  </p>
-                  <p>
-                    <strong>Start Date:</strong> {booking.start_date}
-                  </p>
-                  <p>
-                    <strong>End Date:</strong> {booking.end_date}
-                  </p>
-
-                  {/* Space details */}
-                  <p>
-                    <strong>Space Name:</strong> {booking.space.name}
-                  </p>
-                  {/* Add other space details as needed */}
-                </div>
+                <Card key={index} className="mb-4">
+                  <Card.Body>
+                    <Card.Title>Booking ID: {booking._id}</Card.Title>
+                    <Card.Text>Start Date: {booking.start_date}</Card.Text>
+                    <Card.Text>End Date: {booking.end_date}</Card.Text>
+                    {/* Space details */}
+                    <Card.Text>Space Name: {booking.space.name}</Card.Text>
+                    {/* Add other space details as needed */}
+                  </Card.Body>
+                </Card>
               ))}
             </div>
           )}
@@ -106,7 +80,7 @@ const AdminUserDetailsPage = () => {
       ) : (
         <p>Loading user details...</p>
       )}
-    </div>
+    </Container>
   );
 };
 

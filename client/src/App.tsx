@@ -3,23 +3,23 @@ import { LoginPage } from "./pages/auth/signin.tsx";
 import SignUpPage from "./pages/auth/signup.tsx";
 import HomePage from "./components/homepage/homepage-form.tsx";
 import { AuthContextProvider } from "./context/auth-context.tsx";
-import Navbar from "./components/navbar/navbar.tsx";
 import AdminHomePage from "./components/admin/adminHomePage.tsx";
 import RoutePolicy from "./components/auth/route-policy.tsx";
-import AdminUsersPage from "./components/admin/user/adminUsersPage.tsx";
+import AdminUsersPage from "./components/admin/user/UsersPage.tsx";
 import AdminSpacesPage from "./components/admin/space/SpacesPage.tsx";
 import AdminBookingsPage from "./components/admin/booking/adminBookingsPage.tsx";
 import AdminUserDetailsPage from "./components/admin/user/adminUserDetails.tsx";
 import AdminSpaceDetailsPage from "./components/admin/space/SpaceDetails.tsx";
 import { UpdateSpace } from "./components/admin/space/UpdateSpace.tsx";
 import { CreateSpacePage } from "./components/admin/space/CreateSpace.tsx";
+import Topbar from "./components/navbar/navbar.tsx";
 
 function App() {
   return (
     <AuthContextProvider>
       <Router>
         <RoutePolicy>
-          <Navbar />
+          <Topbar />
           <Routes>
             <Route path="/admin/bookings" element={<AdminBookingsPage />} />
             <Route path="/admin/spaces" element={<AdminSpacesPage />} />

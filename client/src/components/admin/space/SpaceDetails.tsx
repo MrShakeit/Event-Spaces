@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { adminApi } from "../../../api/admin-api";
 import { Space } from "../../../pages/types/spaces";
 import { Booking } from "../../../pages/types/bookings";
+import { Button, Card, Container } from "react-bootstrap";
 
 const AdminSpaceDetailsPage = () => {
   const { id } = useParams();
@@ -25,89 +26,101 @@ const AdminSpaceDetailsPage = () => {
   }, [id]);
 
   return (
-    <div className="px-4 py-2">
+    <Container className="mx-auto max-w-2xl px-4 py-2">
       {space ? (
         <div>
           <h2 className="text-2xl font-bold mb-4">Space Details</h2>
           <div className="grid grid-cols-2 gap-5 mb-4">
             <div className="">
-              <button
-                onClick={() => navigate(`/admin/update/space/${id}`, {state:{space}})}
-                className="relative inline-flex items-center rounded-md border-2 border-blue-500 bg-blue-500 hover:bg-blue-700 text-white px-2 py-2 text-sm mb-2 font-medium "
+              <Button
+                onClick={() =>
+                  navigate(`/admin/update/space/${id}`, { state: { space } })
+                }
+                className="relative inline-flex items-center rounded-md border-2 border-blue-500 bg-blue-500 hover:bg-blue-700 text-white px-2 py-2 text-sm mb-2 font-medium"
               >
                 Update Space
-              </button>
+              </Button>
 
-              <p>
-                <strong>Space ID:</strong> {space._id}
-              </p>
-              <p>
-                <strong>Name:</strong> {space.name}
-              </p>
-              <p>
-                <strong>Size:</strong> {space.size}
-              </p>
+              <Card>
+                <Card.Body>
+                  <Card.Text>
+                    <strong>Space ID:</strong> {space._id}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Name:</strong> {space.name}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Size:</strong> {space.size}
+                  </Card.Text>
 
-              <p>
-                <strong>City:</strong> {space.address?.city}
-              </p>
-              <p>
-                <strong>Number:</strong> {space.address?.number}
-              </p>
-              <p>
-                <strong>Street:</strong> {space.address?.street}
-              </p>
-              <p>
-                <strong>Floor:</strong> {space.address?.floor}
-              </p>
-              <p>
-                <strong>Room Number:</strong> {space.address?.room_no}
-              </p>
-              <p>
-                <strong>Other:</strong> {space.address?.other}
-              </p>
+                  <Card.Text>
+                    <strong>City:</strong> {space.address?.city}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Number:</strong> {space.address?.number}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Street:</strong> {space.address?.street}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Floor:</strong> {space.address?.floor}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Room Number:</strong> {space.address?.room_no}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Other:</strong> {space.address?.other}
+                  </Card.Text>
 
-              <p>
-                <strong>Price:</strong> {space.price}
-              </p>
-              <p>
-                <strong>Description:</strong> {space.description}
-              </p>
-              <p>
-                <strong>Is Deleted:</strong> {space.is_deleted ? "Yes" : "No"}
-              </p>
-              <p>
-                <strong>Is Blocked:</strong> {space.is_blocked ? "Yes" : "No"}
-              </p>
+                  <Card.Text>
+                    <strong>Price:</strong> {space.price}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Description:</strong> {space.description}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Is Deleted:</strong>{" "}
+                    {space.is_deleted ? "Yes" : "No"}
+                  </Card.Text>
+                  <Card.Text>
+                    <strong>Is Blocked:</strong>{" "}
+                    {space.is_blocked ? "Yes" : "No"}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </div>
           </div>
           {space.bookings ? (
             <div>
               <h2 className="text-2xl font-bold mb-4">Bookings</h2>
               {space.bookings.map((booking: Booking, index: number) => (
-                <div key={index} className="mb-4 border p-4 rounded">
-                  <p>
-                    <strong>Booking ID:</strong> {booking._id}
-                  </p>
-                  <p>
-                    <strong>Start Date:</strong> {booking.start_date}
-                  </p>
-                  <p>
-                    <strong>End Date:</strong> {booking.end_date}
-                  </p>
-                  {booking.user ? (
-                    <div>
-                      <p>
-                        <strong>User Name:</strong> {booking.user.name?.first}
-                      </p>
-                      <p>
-                        <strong>User Email:</strong> {booking.user.email}
-                      </p>
-                    </div>
-                  ) : (
-                    <p>No user associated with this booking.</p>
-                  )}
-                </div>
+                <Card key={index} className="mb-4 border p-4 rounded">
+                  <Card.Body>
+                    <Card.Text>
+                      <strong>Booking ID:</strong> {booking._id}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>Start Date:</strong> {booking.start_date}
+                    </Card.Text>
+                    <Card.Text>
+                      <strong>End Date:</strong> {booking.end_date}
+                    </Card.Text>
+                    {booking.user ? (
+                      <div>
+                        <Card.Text>
+                          <strong>User Name:</strong> {booking.user.name?.first}
+                        </Card.Text>
+                        <Card.Text>
+                          <strong>User Email:</strong> {booking.user.email}
+                        </Card.Text>
+                      </div>
+                    ) : (
+                      <Card.Text>
+                        No user associated with this booking.
+                      </Card.Text>
+                    )}
+                  </Card.Body>
+                </Card>
               ))}
             </div>
           ) : (
@@ -117,7 +130,7 @@ const AdminSpaceDetailsPage = () => {
       ) : (
         <p>Loading space details...</p>
       )}
-    </div>
+    </Container>
   );
 };
 
