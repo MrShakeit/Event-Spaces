@@ -15,7 +15,7 @@ export class BookingsRoutes extends CommonRoutesConfig {
 
   configureRoutes(): express.Application {
     this.app
-      .route(`/bookings`)
+      .route(`/admin/bookings`)
       .get(
         //@ts-ignore
         authMiddleware.verifyJWT,
@@ -43,17 +43,21 @@ export class BookingsRoutes extends CommonRoutesConfig {
       ]);
 
     this.app
-      .route(`/bookings/:id`)
+      .route(`/admin/update/booking/:id`)
       .all([
         //@ts-ignore
         authMiddleware.verifyJWT,
         authMiddleware.onlySameUserOrAdminCanDoThisAction,
       ])
-      .get(bookingsController.getBookingById)
+
       //@ts-ignore
       .delete([authMiddleware.verifyIsAdmin, bookingsController.removeBooking])
       //@ts-ignore
       .put([authMiddleware.verifyIsAdmin, bookingsController.updateBooking]);
+
+    this.app
+      .route(`/admin/booking/details/:id`)
+      .get(bookingsController.getBookingById);
 
     return this.app;
   }

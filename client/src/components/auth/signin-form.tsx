@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup"; // Import your validation schema here
 import { useAuth } from "../../context/auth-context";
 import { UserCredentials } from "../../pages/types/users";
@@ -87,8 +87,13 @@ const Login = () => {
                     </Form.Control.Feedback>
                   </Form.Group>
                   <Col className="text-center text-xl font-semibold w-100">
-                    <Button variant="primary" type="submit">
-                      Sign in
+                    <Button
+                      variant="primary"
+                      type="submit"
+                      className="w-100"
+                      disabled={isSubmitting}
+                    >
+                      Sign Up
                     </Button>
                   </Col>
 

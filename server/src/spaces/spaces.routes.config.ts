@@ -16,7 +16,7 @@ export class SpacesRoutes extends CommonRoutesConfig {
       spacesController.listSpaces
     );
 
-    this.app.route(`/admin/space/create`).post(
+    this.app.route(`/admin/create/space`).post(
       //@ts-ignore
       authMiddleware.verifyJWT,
       authMiddleware.verifyIsAdmin,

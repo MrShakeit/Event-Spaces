@@ -1,4 +1,10 @@
 import {
+  Booking,
+  BookingEntity,
+  GetBookingsRequests,
+  GetBookingsResponse,
+} from "../pages/types/bookings";
+import {
   CreateSpace,
   GetSpacesRequests,
   GetSpacesResponse,
@@ -47,6 +53,26 @@ export class AdminApi extends AbstractApiService {
     const res = await this.http.put(
       `update/space/${spaceId}`,
       updatedSpaceData
+    );
+    return res.data;
+  }
+  async getBookings(params: GetBookingsRequests): Promise<GetBookingsResponse> {
+    const res = await this.http.get("bookings", {
+      params,
+    });
+    return res.data;
+  }
+  async getBookingDetails(bookingId: string): Promise<Booking> {
+    const res = await this.http.get(`booking/details/${bookingId}`);
+    return res.data;
+  }
+  async updateBooking(
+    bookingId: string,
+    updatedBookingData: BookingEntity
+  ): Promise<BookingEntity> {
+    const res = await this.http.put(
+      `update/booking/${bookingId}`,
+      updatedBookingData
     );
     return res.data;
   }
