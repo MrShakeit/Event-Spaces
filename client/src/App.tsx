@@ -8,13 +8,16 @@ import RoutePolicy from "./components/auth/route-policy.tsx";
 import AdminUsersPage from "./components/admin/user/UsersPage.tsx";
 import AdminSpacesPage from "./components/admin/space/SpacesPage.tsx";
 import { AdminBookingsPage } from "./components/admin/booking/BookingsPage.tsx";
-import AdminUserDetailsPage from "./components/admin/user/adminUserDetails.tsx";
+import AdminUserDetailsPage from "./components/admin/user/UserDetails.tsx";
 import AdminSpaceDetailsPage from "./components/admin/space/SpaceDetails.tsx";
 import { UpdateSpace } from "./components/admin/space/UpdateSpace.tsx";
 import { CreateSpacePage } from "./components/admin/space/CreateSpace.tsx";
-import Topbar from "./components/navbar/navbar.tsx";
+import Topbar from "./components/layout/navbar.tsx";
 import { AdminBookingDetailsPage } from "./components/admin/booking/BookingsDetails.tsx";
 import { AdminUpdateBooking } from "./components/admin/booking/UpdateBooking.tsx";
+import SpaceDetails from "./components/admin/space/SpaceDetails.tsx";
+import { SpaceDetailsPage } from "./components/space/SpaceDetails.tsx";
+import { AboutUs } from "./components/layout/footer.tsx";
 
 function App() {
   return (
@@ -48,7 +51,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/auth/signin" element={<LoginPage />} />
             <Route path="/auth/signup" element={<SignUpPage />} />
+            <Route path="/space/details/:id" element={<SpaceDetailsPage />} />
           </Routes>
+          <AboutUs />
         </RoutePolicy>
       </Router>
     </AuthContextProvider>

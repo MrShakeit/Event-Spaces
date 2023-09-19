@@ -1,3 +1,4 @@
+import { AboutUs } from "./footer";
 import Topbar from "./navbar";
 
 const Layout = ({ children }: any) => {
@@ -5,6 +6,7 @@ const Layout = ({ children }: any) => {
     <div>
       <Topbar />
       {children}
+      <AboutUs />
     </div>
   );
 };

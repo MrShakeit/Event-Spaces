@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { adminApi } from "../../../api/admin-api";
 import { useNavigate } from "react-router-dom";
 import bookingplaceholder from "../../../assets/icon/booking.png";
-import { Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
-import { Booking, BookingEntity } from "../../../pages/types/bookings";
+import { Card, Col, Container, Pagination, Row } from "react-bootstrap";
+import { BookingEntity } from "../../../pages/types/bookings";
 
 export const AdminBookingsPage = () => {
   const [bookings, setBookings] = useState<BookingEntity[]>([]);

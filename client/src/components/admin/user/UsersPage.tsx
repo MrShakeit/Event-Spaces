@@ -3,11 +3,20 @@ import { adminApi } from "../../../api/admin-api";
 import { UserEntity } from "../../../pages/types/users";
 import { useNavigate } from "react-router-dom";
 import placeholder from "../../../assets/icon/placeholder.jpg";
-import { Button, Card, Col, Container, Pagination, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  FormControl,
+  Pagination,
+  Row,
+} from "react-bootstrap";
 
 const AdminUsersPage: React.FC = () => {
   const [users, setUsers] = useState<UserEntity[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   const fetchUsers = async (page: number) => {
@@ -22,6 +31,12 @@ const AdminUsersPage: React.FC = () => {
   useEffect(() => {
     fetchUsers(currentPage);
   }, [currentPage]);
+
+  const filteredUsers = users.filter((user) =>
+    `${user.email} ${user.name?.first} ${user.name?.last}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <Container className="mt-5">
@@ -41,8 +56,15 @@ const AdminUsersPage: React.FC = () => {
           />
         </Pagination>
       </Col>
+      <FormControl
+        type="text"
+        placeholder="Search by email or name"
+        className="mt-4 mb-4"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <Row className="mt-4">
-        {users.map((user, i) => (
+        {filteredUsers.map((user, i) => (
           <Col key={i} sm={6} md={4} lg={2}>
             <Card
               onClick={() => navigate(`/admin/user/details/${user._id}`)}

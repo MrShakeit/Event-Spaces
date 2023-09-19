@@ -2,15 +2,12 @@ import { Formik } from "formik";
 import { CreateSpace } from "../../../pages/types/spaces";
 import spaceValidationSchema from "../../../validation/createSpaceValidation";
 import { Button, Col, Row, Form, Container } from "react-bootstrap";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 
 interface Props {
   space?: CreateSpace;
   handleSubmit(space: CreateSpace): Promise<void>;
 }
 export const SpaceForm = ({ space, handleSubmit }: Props) => {
-  const [error, setError] = useState();
   const initialValues: CreateSpace = space || {
     name: "",
     address: {
@@ -46,15 +43,7 @@ export const SpaceForm = ({ space, handleSubmit }: Props) => {
             onSubmit={handleSubmit}
             initialValues={initialValues}
           >
-            {({
-              touched,
-              errors,
-              values,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              handleBlur,
-            }) => {
+            {({ touched, errors, handleSubmit, isSubmitting }) => {
               return (
                 <Form noValidate onSubmit={handleSubmit}>
                   <h5 className="text-center text-danger"></h5>

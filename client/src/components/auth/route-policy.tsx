@@ -12,11 +12,12 @@ const RoutePolicy = ({ children }: any) => {
   const isHomePagePath = window.location.pathname === "/";
   const hasPermission = () => {
     const map = {
-      "/admin/users": 12,
-      "/admin/bookings": 12,
-      "/admin/spaces/": 12,
-      "/admin/spaces": 12,
-      "/admin/create/space": 12,
+      // "/admin/users": 12,
+      // "/admin/bookings": 12,
+      // "/admin/bookings/": 12,
+      // "/admin/spaces/": 12,
+      // "/admin/spaces": 12,
+      // "/admin/create/space": 12,
     };
     if (map[window.location.pathname] === undefined) {
       return true;

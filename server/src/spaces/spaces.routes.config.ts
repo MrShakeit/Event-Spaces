@@ -10,6 +10,16 @@ export class SpacesRoutes extends CommonRoutesConfig {
   }
 
   configureRoutes(): express.Application {
+    this.app
+      .route(`/space/details/:id`)
+      //@ts-ignore
+      .get(authMiddleware.verifyJWT, spacesController.getSpaceById);
+
+    this.app.route(`/space/list`).get(
+      //@ts-ignore
+      //authMiddleware.verifyJWT,
+      spacesController.listSpaces
+    );
     this.app.route(`/admin/spaces`).get(
       //@ts-ignore
       //authMiddleware.verifyJWT,
@@ -28,7 +38,6 @@ export class SpacesRoutes extends CommonRoutesConfig {
       authMiddleware.verifyIsAdmin,
       spacesController.getSpaceDetails
     );
-
     this.app
       .route(`/admin/update/space/:id`)
       .all([
@@ -40,6 +49,7 @@ export class SpacesRoutes extends CommonRoutesConfig {
       .delete([authMiddleware.verifyIsAdmin, spacesController.removeSpace])
       //@ts-ignore
       .put([authMiddleware.verifyIsAdmin, spacesController.updateSpace]);
+
     return this.app;
   }
 }
